@@ -126,5 +126,6 @@
     <module>Player</module>
     <module>Enemy</module>
     <module>Asteroids</module>
+    <module>Bullet</module>
   </modules>
 </project>
