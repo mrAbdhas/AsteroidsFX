@@ -127,5 +127,6 @@
     <module>Enemy</module>
     <module>Asteroids</module>
     <module>Bullet</module>
+    <module>Collision</module>
   </modules>
 </project>
