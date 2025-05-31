@@ -125,5 +125,6 @@
     <module>Common</module>
     <module>Player</module>
     <module>Enemy</module>
+    <module>Asteroids</module>
   </modules>
 </project>
