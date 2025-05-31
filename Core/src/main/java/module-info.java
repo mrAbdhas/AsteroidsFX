@@ -4,4 +4,6 @@ module Core {
     exports dk.sdu.cbse.core;
 
     uses dk.sdu.cbse.common.services.IGamePluginService;
+    uses dk.sdu.cbse.common.services.IEntityProcessingService;
+    uses dk.sdu.cbse.common.services.IPostEntityProcessingService;
 }
