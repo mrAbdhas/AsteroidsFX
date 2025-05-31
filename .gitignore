@@ -16,3 +16,4 @@
 /.idea/
 
 /*/target/
+**/target (# Name clash *)/
