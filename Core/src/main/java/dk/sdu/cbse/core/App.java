@@ -12,17 +12,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.util.ServiceLoader;
 
 
 public class App extends Application {
 
-    private final Game game = new Game();
     private final GameData gameData = new GameData();
     private final World world = new World();
 
-    private final ServiceLoader<IGamePluginService> pluginLoader =
-            ServiceLoader.load(IGamePluginService.class);
+    private final ModuleConfig moduleConfig = new ModuleConfig();
 
     @Override
     public void start(Stage stage) {
@@ -52,7 +49,14 @@ public class App extends Application {
             @Override
             public void handle(long now) {
                 gameData.setDeltaTime(0.016); // Approx 60 FPS
-                game.update(gameData, world);
+
+                for (var processor : moduleConfig.getEntityProcessingServices()) {
+                    processor.process(gameData, world);
+                }
+
+                for (var postProcessor : moduleConfig.getPostEntityProcessingServices()) {
+                    postProcessor.process(gameData, world);
+                }
 
                 gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 drawEntities(gc, world);
@@ -75,7 +79,7 @@ public class App extends Application {
 
 
     private void startPlugins() {
-        for (IGamePluginService plugin : pluginLoader) {
+        for (IGamePluginService plugin : moduleConfig.getGamePluginServices()) {
             plugin.start(gameData, world);
         }
     }
