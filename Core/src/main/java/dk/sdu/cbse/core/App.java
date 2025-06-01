@@ -1,7 +1,6 @@
 package dk.sdu.cbse.core;
 
 import dk.sdu.cbse.common.data.GameData;
-import dk.sdu.cbse.common.data.GameKeys;
 import dk.sdu.cbse.common.data.World;
 import dk.sdu.cbse.common.services.IGamePluginService;
 import javafx.animation.AnimationTimer;
@@ -56,13 +55,24 @@ public class App extends Application {
                 game.update(gameData, world);
 
                 gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                gc.fillText("Game running", 350, 300);
+                drawEntities(gc, world);
 
-                System.out.println("UP: " + gameData.getKeys().isDown(GameKeys.UP));
+
 
             }
         }.start();
     }
+
+    private void drawEntities(GraphicsContext gc, World world) {
+        for (var entity : world.getEntities()) {
+            float x = entity.getX();
+            float y = entity.getY();
+            float r = entity.getRadius();
+
+            gc.strokeOval(x - r, y - r, r * 2, r * 2);
+        }
+    }
+
 
     private void startPlugins() {
         for (IGamePluginService plugin : pluginLoader) {
