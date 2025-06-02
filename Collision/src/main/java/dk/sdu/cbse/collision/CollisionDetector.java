@@ -17,11 +17,18 @@ public class CollisionDetector implements IPostEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        for (Entity bullet : world.getEntities()) {
+        Collection<Entity> entities = world.getEntities();
+        for (Entity bullet : new java.util.ArrayList<>(entities)) {
             if (!(bullet instanceof Bullet)) continue;
 
-            for (Entity target : world.getEntities()) {
-                if (bullet == target || (target instanceof Bullet)) continue;
+            for (Entity target : new java.util.ArrayList<>(entities)) {
+                if (bullet == target || target instanceof Bullet) continue;
+
+                // Skip if bullet was fired by this entity
+                if (((Bullet) bullet).getShooterID() != null &&
+                        ((Bullet) bullet).getShooterID().equals(target.getID())) {
+                    continue;
+                }
 
                 float dx = bullet.getX() - target.getX();
                 float dy = bullet.getY() - target.getY();
@@ -47,7 +54,6 @@ public class CollisionDetector implements IPostEntityProcessingService {
             }
         }
 
-        // Remove the hit target
         world.removeEntity(target);
     }
 

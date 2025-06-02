@@ -25,6 +25,11 @@
       <artifactId>Common</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>dk.sdu.cbse</groupId>
+      <artifactId>CommonBullet</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
 </project>
