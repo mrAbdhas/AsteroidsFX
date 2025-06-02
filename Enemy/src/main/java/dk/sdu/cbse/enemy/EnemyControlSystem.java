@@ -47,10 +47,37 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 }
                 lastFired = System.currentTimeMillis();
             }
+
+            setShape(entity);
         }
 
         world.getEntities().addAll(bulletsToAdd);
     }
+
+    private void setShape(Entity e) {
+        float[] sx = new float[4];
+        float[] sy = new float[4];
+
+        float x = e.getX();
+        float y = e.getY();
+        float r = e.getRadius();
+
+        sx[0] = x - r;
+        sy[0] = y - r;
+
+        sx[1] = x + r;
+        sy[1] = y - r;
+
+        sx[2] = x + r;
+        sy[2] = y + r;
+
+        sx[3] = x - r;
+        sy[3] = y + r;
+
+        e.setShapeX(sx);
+        e.setShapeY(sy);
+    }
+
 
     private boolean canFire() {
         return (System.currentTimeMillis() - lastFired) > 1500;

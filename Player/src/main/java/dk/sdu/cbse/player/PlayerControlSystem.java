@@ -55,6 +55,9 @@ public class PlayerControlSystem implements IEntityProcessingService {
             entity.setDy(dy * 0.99f);
             entity.setRotation(rotation);
 
+            setShape(entity);
+
+
             if (gameData.getKeys().isDown(GameKeys.SPACE) && canFire()) {
                 for (BulletSPI bulletSPI : bulletSPILoader) {
                     Entity bullet = bulletSPI.createBullet(entity, gameData, world);
@@ -69,6 +72,28 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
         world.getEntities().addAll(bulletsToAdd);
     }
+
+    private void setShape(Entity e) {
+        float[] sx = new float[3];
+        float[] sy = new float[3];
+
+        float radians = (float) Math.toRadians(e.getRotation());
+        float x = e.getX();
+        float y = e.getY();
+
+        sx[0] = x + (float) Math.cos(radians) * 16;
+        sy[0] = y + (float) Math.sin(radians) * 16;
+
+        sx[1] = x + (float) Math.cos(radians - 2.5f) * 10;
+        sy[1] = y + (float) Math.sin(radians - 2.5f) * 10;
+
+        sx[2] = x + (float) Math.cos(radians + 2.5f) * 10;
+        sy[2] = y + (float) Math.sin(radians + 2.5f) * 10;
+
+        e.setShapeX(sx);
+        e.setShapeY(sy);
+    }
+
 
     private boolean canFire() {
         return (System.currentTimeMillis() - lastFired) > 300;

@@ -69,11 +69,29 @@ public class App extends Application {
 
     private void drawEntities(GraphicsContext gc, World world) {
         for (var entity : world.getEntities()) {
-            float x = entity.getX();
-            float y = entity.getY();
-            float r = entity.getRadius();
+            float[] sx = entity.getShapeX();
+            float[] sy = entity.getShapeY();
 
-            gc.strokeOval(x - r, y - r, r * 2, r * 2);
+            boolean hasValidShape = sx != null && sy != null &&
+                    sx.length > 1 && sy.length > 1 &&
+                    !(sx[0] == 0 && sy[0] == 0 && sx[1] == 0 && sy[1] == 0);
+
+            if (hasValidShape) {
+                double[] dx = new double[sx.length];
+                double[] dy = new double[sy.length];
+                for (int i = 0; i < sx.length; i++) {
+                    dx[i] = sx[i];
+                    dy[i] = sy[i];
+                }
+                gc.strokePolygon(dx, dy, dx.length);
+            } else {
+                gc.strokeOval(
+                        entity.getX() - entity.getRadius(),
+                        entity.getY() - entity.getRadius(),
+                        entity.getRadius() * 2,
+                        entity.getRadius() * 2
+                );
+            }
         }
     }
 
